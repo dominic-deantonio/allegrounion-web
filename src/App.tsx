@@ -18,18 +18,26 @@ function getTimeSince(): string {
   return time;
 }
 
-function TimerDisplay() {
-  var d = new Duration(startDate, new Date(Date.now()));
-  return <div>{`${d.days} days, ${d.hour} hours, ${d.minute} minute(s)`}</div>;
+function TimerDisplay(props: { now: number }) {
+  var d = new Duration(startDate, new Date(props.now));
+  return <div>{`${d.days} days, ${d.hour} hours, ${d.minute} minute(s), ${d.second} seconds`}</div>;
 }
 const email = "allegrounion@gmail.com";
 function App() {
+  const [now, setNow] = useState(Date.now());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setNow(Date.now());
+    }, 1000);
+  }, []);
+
   return (
     <div>
       Send an email to <a href={`mailto:${email}`}>{email}</a> to get updates on the latest about the water situation.
       <br />
       <br />
-      Length of time without water: <TimerDisplay />
+      Length of time without water: <TimerDisplay now={now} />
     </div>
   );
 }

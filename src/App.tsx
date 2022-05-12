@@ -3,41 +3,35 @@ import { Timer, Time, TimerOptions } from "timer-node";
 var Duration = require("duration");
 
 const timeWaterTurnedOff = 1652094000000;
+const timeWaterTurnedOn = 1652380980000;
 const startDate = new Date(timeWaterTurnedOff);
-
-function getMillisDiff(): number {
-  return Math.abs(Date.now() - timeWaterTurnedOff);
-}
-
-function getTimeSince(): string {
-  const diffMillis = getMillisDiff();
-  const diffTotalMins = diffMillis / (1000 * 60);
-  const diffHours = Math.floor(diffTotalMins / 60);
-  const diffMins = Math.floor(diffTotalMins - diffHours * 60);
-  const time = `${diffHours} hours and ${diffMins} minute(s)`;
-  return time;
-}
+const endDate = new Date(timeWaterTurnedOn);
 
 function TimerDisplay(props: { now: number }) {
-  var d = new Duration(startDate, new Date(props.now));
-  return <div>{`${d.days} days, ${d.hour} hours, ${d.minute} minute(s), ${d.second} seconds`}</div>;
+  var d = new Duration(startDate, endDate);
+  return <strong>{`${d.days} days, ${d.hour} hours, ${d.minute} minute(s)`}</strong>;
 }
 const email = "allegrounion@gmail.com";
 function App() {
   const [now, setNow] = useState(Date.now());
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setNow(Date.now());
-    }, 1000);
-  }, []);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     setNow(Date.now());
+  //   }, 1000);
+  // }, []);
 
   return (
     <div>
-      Send an email to <a href={`mailto:${email}`}>{email}</a> to get updates on the latest about the water situation.
+      According to email correspondence from Allegro on 12 May at 2:43 eastern time, water has been restored.
       <br />
       <br />
-      Length of time without water: <TimerDisplay now={now} />
+      Send an email to <a href={`mailto:${email}`}>{email}</a> to get updates on the latest about the water situation and any ongoing issues.
+      <br />
+      <br />
+      Length of time without water:
+      <br />
+      <TimerDisplay now={now} />
     </div>
   );
 }
